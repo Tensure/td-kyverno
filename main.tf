@@ -46,14 +46,6 @@ locals {
     }
   )
 
-#   argo_values = templatefile("${path.module}/bootstrap/argo_values.tftpl", {
-#     addons_name     = local.metadata.addons_name
-#     addons_repo     = local.metadata.addons_repo_name
-#     addons_url      = local.metadata.addons_repo_url
-#     argocd_username = var.argocd_username
-#     argocd_password = var.argocd_password
-#   })
-
 
   argocd_apps = {
     addons = file("${path.module}/bootstrap/addons.yaml")
@@ -84,7 +76,6 @@ locals {
 }
 
 
-
 # -------------- #
 # Install ArgoCD #
 # -------------- #
@@ -97,11 +88,12 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   chart            = "argo-cd"
-  version          = "7.4.4"
+  version          = "7.8.2"
   repository       = "https://argoproj.github.io/argo-helm"
 
   skip_crds        = false
 
+  # this sets our super secret password for our local kind cluster
   set {
     name = "configs.secret.argocdServerAdminPassword"
     value = "$2a$10$h9Eb./X68WocvlfDJBRh.uC3bo0AozLR4aO/0emB2RKFOWxuIsPyS"

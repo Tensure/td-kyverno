@@ -12,7 +12,7 @@ kind create cluster -n kyverno-demo
 Sweet we have a cluster. Now I'm going to use terraform to bootstrap it with ArgoCD and Kyverno
 <!-- @noshow -->
 ```bash
-terraform apply -auto-approve
+terraform init && terraform apply -auto-approve
 ```
 <!-- @SHOW -->
 <!-- @wait_clear -->
