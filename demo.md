@@ -46,6 +46,8 @@ Okay so that's not ideal lets go ahead and delete that.
 kubectl delete deployment nginx-deployment
 ```
 
+<!-- @wait_clear -->
+
 Lets look at a Kyverno policy that will help us out here
 
 ```bash
@@ -58,13 +60,15 @@ kubectl apply -f requests-and-limits-policy.yaml
 
 ```bash
 kubectl get clusterpolicy -A
-```
+``` 
 
 Okay with our new policy applied that will enforce our policy lets see what happens!
 
 ```bash
 kubectl apply -f no-requests-or-limits-deploy.yaml
 ```
+
+<!-- @wait_clear -->   
 
 Lets look at what happens when we adhere to the policy's rules
 
@@ -80,12 +84,13 @@ kubectl apply -f requests-and-limits-deploy.yaml
 kubectl get deployments nginx-deployment
 ```
 
-<!-- @NOSHOW -->
+<!-- @noshow -->
 ```bash
 kubectl delete deployment nginx-deployment
 ```
 
 <!-- @SHOW -->
+<!-- @wait_clear -->
 
 Lets look at the other kind of policy. We can also use policies to CHANGE or even ADD things to our running resources. 
 
