@@ -1,0 +1,29 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: deployment-owner-label
+spec:
+  crd:
+    spec:
+      names:
+        kind: DeploymentOwnerLabelConstraint
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package deployment_owner_label
+
+        violation[{"msg": msg, "details": {}}] {
+          input.review.kind.kind == "Deployment"
+          not input.review.object.metadata.labels.owner
+          msg := sprintf("Deployment %v in namespace %v is missing the 'owner' label.", [input.review.object.metadata.name, input.review.object.metadata.namespace])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: DeploymentOwnerLabelConstraint
+metadata:
+  name: enforce-owner-label
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

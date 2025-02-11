@@ -15,6 +15,7 @@ locals {
   addons = {
     enable_argocd  = true
     enable_kyverno = true
+    enable_gatekeeper = true
   }
 
   metadata = {

@@ -1,0 +1,42 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8scontainerresourcelimits
+  namespace: gatekeeper-system
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sContainerResourceLimits
+      validation:
+        openAPIV3Schema:
+          type: object
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8scontainerresourcelimits
+
+        violation[{"msg": msg, "details": {}}] {
+          input.review.kind.kind == "Deployment"
+          container := input.review.object.spec.template.spec.containers[_]
+          not container_has_requests_and_limits(container)
+          msg := sprintf("Container '%s' in Deployment '%s' must define resource requests and limits", [container.name, input.review.object.metadata.name])
+        }
+
+        container_has_requests_and_limits(container) {
+          container.resources.requests["cpu"]
+          container.resources.requests["memory"]
+          container.resources.limits["cpu"]
+          container.resources.limits["memory"]
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sContainerResourceLimits
+metadata:
+  name: enforce-container-resources
+  namespace: gatekeeper-system
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

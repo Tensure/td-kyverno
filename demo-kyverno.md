@@ -22,7 +22,7 @@ Kyverno is running but no policies have been setup to enforce.
 Okay Lets take a look at a deployment of nginx. 
 
 ```bash
-cat no-requests-or-limits-deploy.yaml
+cat k8s/no-requests-or-limits-deploy.yaml
 ```
 
 As you can see this pod doesn't have requests or limits defined
@@ -31,7 +31,7 @@ which is NOT a best practice for K8S deployments.
 If we apply this yaml it will get deployed as normal without a policy to enforce:
 
 ```bash
-kubectl apply -f no-requests-or-limits-deploy.yaml
+kubectl apply -f k8s/no-requests-or-limits-deploy.yaml
 ```
 
 Joe you should wait a  second for the apply to work here and then press enter ;D 
@@ -49,11 +49,11 @@ kubectl delete deployment nginx-deployment
 Lets look at a Kyverno policy that will help us out here
 
 ```bash
-cat requests-and-limits-policy.yaml
+cat kyverno/requests-and-limits-policy.yaml
 ```
 
 ```bash
-kubectl apply -f requests-and-limits-policy.yaml
+kubectl apply -f kyverno/requests-and-limits-policy.yaml
 ```
 
 ```bash
@@ -63,17 +63,17 @@ kubectl get clusterpolicy -A
 Okay with our new policy applied that will enforce our policy lets see what happens!
 
 ```bash
-kubectl apply -f no-requests-or-limits-deploy.yaml
+kubectl apply -f k8s/no-requests-or-limits-deploy.yaml
 ```
 
 Lets look at what happens when we adhere to the policy's rules
 
 ```bash
-cat requests-and-limits-deploy.yaml
+cat k8s/requests-and-limits-deploy.yaml
 ```
 
 ```bash
-kubectl apply -f requests-and-limits-deploy.yaml
+kubectl apply -f k8s/requests-and-limits-deploy.yaml
 ```
 
 ```bash
@@ -95,13 +95,13 @@ as our best practices desire.
 Lets look at example policy
 
 ```bash
-cat label-orphaned-deployments-policy.yaml
+cat kyverno/label-orphaned-deployments-policy.yaml
 ```
 
 This policy should add the orphaned label to deployments missing owner lets apply it
 
 ```bash
-kubectl apply -f label-orphaned-deployments-policy.yaml
+kubectl apply -f kyverno/label-orphaned-deployments-policy.yaml
 ```
 ```bash
 kubectl get clusterpolicy -A
@@ -109,7 +109,7 @@ kubectl get clusterpolicy -A
 and lets put our nginx deployment back without the proper owner labels
 
 ```bash
-kubectl apply -f requests-and-limits-deploy.yaml
+kubectl apply -f k8s/requests-and-limits-deploy.yaml
 ```
 
 Lets see what happened!
