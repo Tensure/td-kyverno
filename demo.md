@@ -122,6 +122,17 @@ Lets see what happened!
 ```bash
 kubectl get deployment nginx-deployment -o jsonpath='{.metadata.labels}'
 ```
+<!-- @wait_clear -->
+
+What happens if we combine the power of kyverno with the power of ArgoCD?
+
+```bash
+kubectl -f apply argo-policies.yaml
+```
+
+```bash
+kubectl port-forward service/argo-cd-argocd-server 8080:80 -n argocd
+```
 <!-- @wait -->
 <!-- @HIDE -->
 
