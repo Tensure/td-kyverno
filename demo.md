@@ -127,7 +127,7 @@ kubectl get deployment nginx-deployment -o jsonpath='{.metadata.labels}'
 What happens if we combine the power of kyverno with the power of ArgoCD?
 
 ```bash
-kubectl -f apply argo-policies.yaml
+kubectl apply -f argo-policies.yaml
 ```
 
 ```bash

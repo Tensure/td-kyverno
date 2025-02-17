@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: kyverno-policies
+  name: no-requests
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/Tensure/td-kyverno.git
     targetRevision: main
-    path: policies
+    path: apps/no-requests/
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: kyverno
+    namespace: default
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
