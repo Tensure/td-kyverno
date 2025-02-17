@@ -13,8 +13,10 @@ spec:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: requests-app
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
