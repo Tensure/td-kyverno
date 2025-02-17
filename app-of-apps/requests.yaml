@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/Tensure/td-kyverno.git
     targetRevision: main
-    path: apps/requests-and-lmits
+    path: apps/requests-and-limits
     directory:
       recurse: true
   destination:
