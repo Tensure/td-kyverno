@@ -1,13 +1,3 @@
-provider "kubernetes" {
-  config_path = pathexpand("~/.kube/config")
-}
-
-provider "helm" {
-  kubernetes {
-    config_path = pathexpand("~/.kube/config")
-  }
-}
-
 locals {
   cluster_name = "kyverno-demo"
   environment  = "dev"
@@ -67,13 +57,18 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   chart            = "argo-cd"
-  version          = "7.8.2"
+  version          = "9.1.4"
   repository       = "https://argoproj.github.io/argo-helm"
 
-  set {
-    name  = "configs.secret.argocdServerAdminPassword"
-    value = "$2a$10$h9Eb./X68WocvlfDJBRh.uC3bo0AozLR4aO/0emB2RKFOWxuIsPyS"
-  }
+  values = [
+    yamlencode({
+      configs = {
+        secret = {
+          argocdServerAdminPassword = "$2a$10$h9Eb./X68WocvlfDJBRh.uC3bo0AozLR4aO/0emB2RKFOWxuIsPyS"
+        }
+      }
+    })
+  ]
 }
 
 resource "kubernetes_secret_v1" "cluster" {
