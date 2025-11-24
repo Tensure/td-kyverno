@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: policy-reporter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kyverno.github.io/policy-reporter
+    chart: policy-reporter
+    targetRevision: "2.20.1"
+    helm:
+      values: |
+        ui:
+          enabled: true
+        kyvernoplugin:
+          enabled: true
+        monitoring:
+          enabled: false
+        redis:
+          enabled: false
+        database:
+          type: ""
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: policy-reporter
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

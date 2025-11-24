@@ -1,6 +1,6 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: 
+metadata:
   name: kyverno-policies
   namespace: argocd
 spec:
@@ -20,7 +20,7 @@ spec:
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: 
+metadata:
   name: kyverno-apps
   namespace: argocd
 spec:
